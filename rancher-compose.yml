@@ -1,0 +1,21 @@
+version: '2'
+services:
+  hastebin:
+    scale: ${SCALE}
+    start_on_create: true
+    lb_config:
+      port_rules:
+      - hostname: ${DOMAIN}
+        target_port: 8080
+    health_check:
+      healthy_threshold: 2
+      response_timeout: 2000
+      port: 8080
+      unhealthy_threshold: 3
+      initializing_timeout: 60000
+      interval: 2000
+      strategy: recreate
+      reinitializing_timeout: 60000
+  redis:
+    scale: ${SCALE}
+    start_on_create: true

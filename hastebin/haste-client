@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+"""
+Usage:
+$ cat hastebin.py | ./hastebin.py
+http://hastebin.com/KEY
+$ ./hastebin.py hastebin.py
+http://hastebin.com/KEY
+"""
+
+import json, requests, sys
+
+URL = "http://localhost:8080"
+
+if sys.stdin.isatty():
+    with open(sys.argv[1], 'r') as filedata:
+        data = "".join(filedata.readlines()).strip()
+else:
+    data = "".join(sys.stdin.readlines()).strip()
+response = requests.post(URL + "/documents", data)
+sys.stdout.write("%s/%s\n" % (URL, json.loads(response.text)['key']))
